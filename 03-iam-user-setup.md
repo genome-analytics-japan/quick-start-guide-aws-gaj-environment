@@ -138,7 +138,7 @@ aws_secret_access_key = fromGAJ.csvの中にあるシークレットアクセス
 `newfile_for_GAJ` は、「２章、鍵のセットアップ」で作ったものを指定します。
 `ユーザ名`と、ホストにあたる `XXX.XXX.XXX.XXX` は、こちらからお伝えしたものです。
 
-```
+```console
 ssh -i newfile_for_GAJ ユーザ名@XXX.XXX.XXX.XXX
 ```
 
