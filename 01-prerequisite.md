@@ -9,7 +9,7 @@
 もし、AWSコマンドをいれることができない場合は、Dockerを使うことで解決できます。
 
 
-# 1.1 Install AWS cli
+## 1.1 Install AWS cli
 AWS Command Line Interface (AWS CLI) のバージョン 2 をインストールする方法について、
 [AWS CLI バージョン 2 のインストール](https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/install-cliv2.html) にまとめられています。
 オペレーティングシステムとして、Linux，macOS上，Windowsがサポートされています（2020-08-12現在）。
@@ -19,7 +19,7 @@ Dockerを用いる場合も紹介されています。
 - [macOS での AWS CLI バージョン 2 のインストール](https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/install-cliv2-mac.html)
 - [Windows への AWS CLI バージョン 2 のインストール](https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/install-cliv2-windows.html)
 
-# 1.2 Install Docker
+## 1.2 Install Docker
 [Docker公式サイト](https://docs.docker.com/get-docker/)からインストールパッケージをダウンロードし、インストールしてください。
 Linux，macOS，Windowsがサポートされています（2020-08-12現在）。
 
