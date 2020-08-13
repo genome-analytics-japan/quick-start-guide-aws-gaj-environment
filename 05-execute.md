@@ -265,8 +265,8 @@ cwltool --outdir ${OUTDIR} ${TOOLSDIR}/samples/Workflows/word-grep-wc.cwl \
 hotsub run   \
  --script ./word-grep-wc.sh \
  --tasks ./word-grep-wc.5word.csv \
- --image hotsub/c4cwl ¥
---aws-ec2-instance-type c5.2xlarge \
+ --image hotsub/c4cwl \
+ --aws-ec2-instance-type c5.2xlarge \
  --aws-region ap-northeast-1 \
  --log-dir /tmp \
  --verbose
