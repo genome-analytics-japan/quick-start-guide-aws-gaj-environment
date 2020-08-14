@@ -122,9 +122,16 @@ delete: s3://test-bucket/manabu-sample-directory-cp/abc.txt
 
 abc.txtがなくなったことが確認できます。
 
+```console
 aws-GAJ s3 ls s3://test-bucket/manabu-sample-directory-cp/
+```
+
+出力例
+
+```text
 2020-06-25 05:08:20         59 manabu.txt
 2020-06-25 05:08:20         24 xyz.txt
+```
 
 ## 4.5. フォルダを消す
 
