@@ -59,11 +59,11 @@ s3://test-bucket/result/20200707-1
 
 この場合、
 CSVファイルは、以下のように変更します。
-変更場所は、CSVファイルの２行目の最初のカラム、赤字の部分です。
+変更場所は、CSVファイルの２行目の最初のカラム、`s3://test-bucket/result/20200707-1`の部分です。
 
 ```csv
 --output-recursive OUTDIR,--input-recursive INPUTDATADIR,--input-recursive TOOLSDIR
-s3://test-bucket/result/20200707-1,s3://test-bucket/GAJ-sample-directory,s3://test-bucket/tools
+s3://test-bucket/result/20200707-1,s3://test-bucket/samples/inputGAJ-sample-directory,s3://test-bucket/tools
 ```
 
 ### 5.1.3. 入力データがあるディレクトリを指定する
@@ -72,7 +72,7 @@ s3://test-bucket/result/20200707-1,s3://test-bucket/GAJ-sample-directory,s3://te
 解析を行いたい入力データがの場所にあるとします。
 
 ```text
-s3://test-bucket/input/20200707
+s3://test-bucket/samples/input/20200707
 ```
 
 この場合、
@@ -81,7 +81,7 @@ CSVファイルは、以下のように変更します。
 
 ```csv
 --output-recursive OUTDIR,--input-recursive INPUTDATADIR,--input-recursive TOOLSDIR
-s3://test-bucket/result/20200707-1,s3://test-bucket/input/20200707,s3://test-bucket/tools
+s3://test-bucket/result/20200707-1,s3://test-bucket/samples/input/20200707,s3://test-bucket/samples
 ```
 
 ### 5.1.4. スクリプトファイルを指定する
@@ -89,16 +89,16 @@ s3://test-bucket/result/20200707-1,s3://test-bucket/input/20200707,s3://test-buc
 実行したい解析スクリプトのディレクトリが以下の場所にあるとします。
 
 ```text
-s3://test-bucket/script/20200707
+s3://test-bucket/samples/
 ```
 
 この場合、
 CSVファイルは、以下のように変更します。
-変更場所は、CSVファイルの２行目の3番目のカラム、赤字の部分です。
+変更場所は、CSVファイルの２行目の3番目のカラム、`s3://test-bucket/samples`の部分です。
 
 ```csv
 --output-recursive OUTDIR,--input-recursive INPUTDATADIR,--input-recursive TOOLSDIR
-s3://test-bucket/result/20200707-1,s3://test-bucket/input/20200707,s3://test-bucket/script/20200707
+s3://test-bucket/result/20200707-1,s3://test-bucket/samples/input/20200707,s3://test-bucket/samples
 ```
 
 ## 5.2. 解析開始するマシンへログイン
@@ -139,7 +139,7 @@ RAM: 16GB
 入力データは以下にあるとしています。
 
 ```text
-s3://test-bucket/input/20200707
+s3://test-bucket/samples/input/20200707
 ```
 
 この場所にあるデータは、解析マシン上では
@@ -147,7 +147,7 @@ s3://test-bucket/input/20200707
 ですので
 
 ```text
-s3://test-bucket/input/20200707/sampledata.txt
+s3://test-bucket/samples/input/20200707/sampledata.txt
 ```
 
 というファイルは、解析マシン上では
@@ -168,9 +168,16 @@ echo "=== Parameter Check ==="
 set
 echo "======================="
 
-cwltool --outdir ${OUTDIR} ${TOOLSDIR}/samples/Workflows/word-grep-wc.cwl \
-    --input ${INPUTDATADIR}/sampledata.txt \
-    --word hello
+cwltool --outdir ${OUTDIR} ${TOOLSDIR}/Workflows/word-grep-wc.cwl \
+    --file_to_search ${INPUTDATADIR}/sampledata.txt \
+    --pattern hello
+```
+
+### 5.3.4 設定ファイルの準備
+
+```word-grep-wc.csv
+--output-recursive OUTDIR,--input-recursive INPUTDATADIR,--input-recursive TOOLSDIR
+s3://test-bucket/result/20200707-1,s3://test-bucket/samples/input/20200707,s3://test-bucket/samples
 ```
 
 ### 5.3.4. 解析の実行
@@ -221,17 +228,17 @@ echo $?
 
 解析プログラムがいくつかの解析に関するパラメータを受けるとき、これらのパラメータについて、パラメータの数だけ計算用の仮想マシンをたてて、同時に解析を行う事が可能です。
 
-今回は、5個のパラメータ(`hello`, `world`, `apple`, `orange`, `melon`)について、それぞれ別々のS3のフォルダに結果を格納するようにする例を紹介します。
+今回は、5個のパラメータ(`hello`, `world`, `one`, `two`, `three`)について、それぞれ別々のS3のフォルダに結果を格納するようにする例を紹介します。
 
 以下のようなファイルを作ります。今回は ./word-grep-wc.5words.csv という名前のファイルにします。
 
 ```csv
 --env WORD, --output-recursive OUTDIR,--input-recursive INPUTDATADIR,--input-recursive TOOLSDIR
-hello,s3://test-bucket/result/20200707-1,s3://test-bucket/input/20200707,s3://test-bucket/script/20200707
-world,s3://test-bucket/result/20200707-2,s3://test-bucket/input/20200707,s3://test-bucket/script/20200707
-apple,s3://test-bucket/result/20200707-3,s3://test-bucket/input/20200707,s3://test-bucket/script/20200707
-orange,s3://test-bucket/result/20200707-4,s3://test-bucket/input/20200707,s3://test-bucket/script/20200707
-melon,s3://test-bucket/result/20200707-5,s3://test-bucket/input/20200707,s3://test-bucket/script/20200707
+hello,s3://test-bucket/result/20200707-1,s3://test-bucket/samples/input/20200707,s3://test-bucket/samples
+world,s3://test-bucket/result/20200707-2,s3://test-bucket/samples/input/20200707,s3://test-bucket/samples
+one,s3://test-bucket/result/20200707-3,s3://test-bucket/samples/input/20200707,s3://test-bucket/samples
+two,s3://test-bucket/result/20200707-4,s3://test-bucket/samples/input/20200707,s3://test-bucket/samples
+three,s3://test-bucket/result/20200707-5,s3://test-bucket/samples/input/20200707,s3://test-bucket/samples
 ```
 
 このようにすることで、各計算マシンの解析スクリプトは、解析用のパラメータを`WORD`という環境変数で受け取ります。また出力するべきS3の場所もそれぞれのマシンで、`OUTDIR`という環境変数で受け取ります。
@@ -240,6 +247,8 @@ melon,s3://test-bucket/result/20200707-5,s3://test-bucket/input/20200707,s3://te
 
 解析スクリプト `word-grep-wc.sh`は以下のようになります。
 `OUTDIR`, `TOOLSDIR`,`INPUTDATADIR`, `WORD`が、パラメータファイルで指定した部分です。
+
+前のスクリプトと似ていますが、`--pattern` に渡す値が固定値からパラメータに変更になっています。
 
 ```bash
 # !/bin/bash
@@ -251,9 +260,9 @@ echo "=== Parameter Check ==="
 set
 echo "======================="
 
-cwltool --outdir ${OUTDIR} ${TOOLSDIR}/samples/Workflows/word-grep-wc.cwl \
-    --input ${INPUTDATADIR}/sampledata.txt \
-    --word ${WORD}
+cwltool --outdir ${OUTDIR} ${TOOLSDIR}/Workflows/word-grep-wc.cwl \
+    --file_to_search ${INPUTDATADIR}/sampledata.txt \
+    --pattern ${WORD}
 ```
 
 ### 5.4.3. 解析を実行する
@@ -264,7 +273,7 @@ cwltool --outdir ${OUTDIR} ${TOOLSDIR}/samples/Workflows/word-grep-wc.cwl \
 ```console
 hotsub run   \
  --script ./word-grep-wc.sh \
- --tasks ./word-grep-wc.5word.csv \
+ --tasks ./word-grep-wc.5words.csv \
  --image hotsub/c4cwl \
  --aws-ec2-instance-type c5.2xlarge \
  --aws-region ap-northeast-1 \
@@ -273,3 +282,8 @@ hotsub run   \
 ```
 
 実行をおこなったあと、以前と同じ方法で、正しく解析が行えたかをご確認ください。
+
+#### 5.4.3.1 解析の実行が失敗するときの例
+
+grepを例にしましたが、grepしたときに、対象ファイル内にない文字列を渡した場合、
+エラーになることがあります。
